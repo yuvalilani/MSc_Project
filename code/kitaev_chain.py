@@ -62,8 +62,8 @@ def compare_topological_indices(n=200, region_size=0.5):
     a = [int(n_cut - region_size/2 * n), n_cut, int(n_cut + region_size/2 * n)]
 
     mu = np.linspace(-4, 4, 101)
-    gamma_index = np.zeros(len(mu), dtype=np.complex128)
-    rho_index = np.zeros(len(mu), dtype=np.complex128)
+    gamma_index = np.zeros(len(mu))
+    rho_index = np.zeros(len(mu))
     for i in tqdm(range(len(mu))):
         gamma = covariance_matrix(n, mu[i])
         gamma_t = partial_transpose(gamma, a)
@@ -71,14 +71,7 @@ def compare_topological_indices(n=200, region_size=0.5):
         mat = density_matrix(gamma, gamma_t, a)
         rho_index[i] = np.angle(np.linalg.det(mat)) / np.pi * 4
 
-    plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.get_cmap('tab20').colors)
-    plt.plot(mu, rho_index, '-', label=r"$\frac{4}{\pi}arg(\mathcal{Z} _{\mathcal{T}})$", linewidth=2)
-    plt.plot(mu, gamma_index, '--', label=r"$-\frac{Im(Tr(\Gamma\tilde\Gamma)}{2}$", linewidth=2)
-    plt.xlabel(r"$\frac{\mu}{t}$", fontsize=13)
-    plt.legend(fontsize="13", loc="upper right")
-    plt.grid()
-    plt.tight_layout()
-    plt.show()
+    np.savetxt("../data/bdi_1d_index_comparison", np.array([mu, gamma_index, rho_index]))
 
 
 if __name__ == '__main__':
