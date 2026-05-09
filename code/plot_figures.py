@@ -19,3 +19,14 @@ if __name__ == '__main__':
     plt.grid()
     plt.tight_layout()
     save_plot("../latex/figures/1d BDI index comparison")
+
+    data = np.loadtxt("../data/d_1d_gamma_convergence")
+    plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.get_cmap('tab20').colors)
+    plt.plot(data[0], data[1], label="Global Index")
+    for j in range(len(data) - 2):
+        plt.plot(data[0], data[j + 2], '--', label="Local Index, N=" + str(j + 1))
+    plt.xlabel(r"$\mu /t$")
+    plt.legend(fontsize="13", loc="upper center")
+    plt.grid()
+    plt.tight_layout()
+    save_plot("../latex/figures/1d D Gamma index convergence")
